@@ -1,0 +1,26 @@
+.aspectRatio1x1 {
+  height: 0px;
+  width: 100%;
+  position: relative;
+  padding-bottom: 100%;
+}
+.aspectRatio1x1>span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  box-shadow: inset 0px 0px 0px 1px #000;
+}
+
+.aspectRatio1x1>span.alive {
+  background: rgb(245, 224, 38);
+}
+
+.aspectRatio1x1>span.dead {
+  background: #ccc;
+}
