@@ -6,20 +6,20 @@ class Board extends React.Component {
     constructor(props) {
       super(props);
 
+      this.timerID = null;
       var currentState = [
         ["*", ".", ".", "*", ".",".", ".", "*","*","*","*", ".", ".", "*", ".",".", ".", "*","*","*"],
         ["*", ".", ".", "*", ".", "*",".", ".","*","*","*", ".", ".", "*", ".",".", ".", "*","*","*"],
         ["*", "*", ".", ".", ".", ".",".", ".","*","*","*", ".", ".", "*", ".",".", ".", "*","*","*"],
-        [".", ".", ".", ".", ".", "*","*",".", ".","*","*", ".", ".", "*", ".",".", ".", "*","*","*"],
+        [".", ".", ".", ".", ".", "*","*", ".", ".","*","*", ".", ".", "*", ".",".", ".", "*","*","*"],
         ["*", ".", ".", ".", ".",".", ".", ".","*","*","*", ".", ".", "*", ".",".", ".", "*","*","*"],
         ["*", ".", ".", "*", ".",".", ".", "*","*","*","*", ".", ".", "*", ".",".", ".", "*","*","*"],
         ["*", ".", ".", "*", ".", "*",".", ".","*","*","*", ".", ".", "*", ".",".", ".", "*","*","*"],
         ["*", "*", ".", ".", ".", ".",".", ".","*","*","*", ".", ".", "*", ".",".", ".", "*","*","*"],
-        [".", ".", ".", ".", ".", "*","*",".", ".","*","*", ".", ".", "*", ".",".", ".", "*","*","*"],
+        [".", ".", ".", ".", ".", "*","*", ".", ".","*","*", ".", ".", "*", ".",".", ".", "*","*","*"],
         ["*", ".", ".", ".", ".",".", ".", ".","*","*","*", ".", ".", "*", ".",".", ".", "*","*","*"]
       ];
-      this.state = {board: currentState, n:0};
-
+      this.state = {board: currentState, update: true};
       this.setNextGeneration = this.setNextGeneration.bind(this);
     }
   
@@ -34,59 +34,89 @@ class Board extends React.Component {
       clearInterval(this.timerID);
     }
 
-    setNextGeneration() {
-      let currentBoard = this.state.board;
-      let nextBoard = [];
-      var stateIsChanged = false;
-
-      for (let i = 0; i < currentBoard.length; i++) {
-        let clearRow = []
-        for (let j = 0; j < currentBoard[i].length; j++) {
-          let neighbors = [
-            (i-1>=0 && j-1>=0 && currentBoard[i-1][j-1] === "*") ? 1 : 0,
-            (i-1>=0 && currentBoard[i-1][j] === "*") ? 1 : 0,
-            (i-1>=0 && j+1<currentBoard[i-1].length && currentBoard[i-1][j+1] === "*") ? 1 : 0,
-            (j-1>=0 && currentBoard[i][j-1] === "*") ? 1 : 0,
-            (j+1<currentBoard[i].length && currentBoard[i][j+1] === "*") ? 1 : 0,
-            (i+1<currentBoard.length && j-1>=0 && currentBoard[i+1][j-1] === "*") ? 1 : 0,
-            (i+1<currentBoard.length && currentBoard[i+1][j] === "*") ? 1 : 0,
-            (i+1<currentBoard.length && j+1<currentBoard[i+1].length && currentBoard[i+1][j+1] === "*") ? 1 : 0
-          ];
-          let aliveNeighbors = neighbors.reduce((sum, value) => sum + value, 0);
-          
-          
-          clearRow.push(
-            (currentBoard[i][j] === "*") ? 
-              (aliveNeighbors<2 || aliveNeighbors>3 ?  "." : "*") :
-              (aliveNeighbors !== 3 ? "." : "*")
-          );
-
-          stateIsChanged = stateIsChanged || clearRow[j] != currentBoard[i][j];
-        }
-        nextBoard.push(clearRow);
-      }
-
-      this.setState({
-        board: nextBoard,
-        n: this.state.n+1
-      })
-
-      if(!stateIsChanged) {
+    componentDidUpdate() {
+      // Interrompe il timer di aggiornamento quando non ci sono ulteriori generazioni
+      if(!this.state.update) {
         clearInterval(this.timerID);
       }
-      console.log(nextBoard);
+    }
+
+    /**
+     * Genera lo stato successivo della board
+     */
+    setNextGeneration() {
+      let l_mCurrentBoard = this.state.board;
+      let l_mNextBoard = [];
+      var l_bBoardStateIsChanged = false;
+
+      // Genero il prossimo stato della board
+      for (let i = 0; i < l_mCurrentBoard.length; i++) {
+        let l_aNewRow = []
+        for (let j = 0; j < l_mCurrentBoard[i].length; j++) {
+
+          // Array binario con lo stato dei vicini
+          // 1 => il vicino è vivo
+          // 0 => il vicino è morto
+          let l_aNeighborsState = [
+            // top-left cell
+            (i-1>=0 && j-1>=0 && l_mCurrentBoard[i-1][j-1] === "*") ? 1 : 0,
+            // top cell
+            (i-1>=0 && l_mCurrentBoard[i-1][j] === "*") ? 1 : 0,
+            // top-right cell
+            (i-1>=0 && j+1<l_mCurrentBoard[i-1].length && l_mCurrentBoard[i-1][j+1] === "*") ? 1 : 0,
+            // left cell
+            (j-1>=0 && l_mCurrentBoard[i][j-1] === "*") ? 1 : 0,
+            // right cell
+            (j+1<l_mCurrentBoard[i].length && l_mCurrentBoard[i][j+1] === "*") ? 1 : 0,
+            // bottom-left cell
+            (i+1<l_mCurrentBoard.length && j-1>=0 && l_mCurrentBoard[i+1][j-1] === "*") ? 1 : 0,
+            // bottom cell
+            (i+1<l_mCurrentBoard.length && l_mCurrentBoard[i+1][j] === "*") ? 1 : 0,
+            // bottom-right cell
+            (i+1<l_mCurrentBoard.length && j+1<l_mCurrentBoard[i+1].length && l_mCurrentBoard[i+1][j+1] === "*") ? 1 : 0
+          ];
+
+          //Calcolo il numero totale di vicini vivi
+          let l_iTotalAlives = l_aNeighborsState.reduce((sum, value) => sum + value, 0);
+          
+          l_aNewRow.push(
+            (l_mCurrentBoard[i][j] === "*") ? 
+              (l_iTotalAlives<2 || l_iTotalAlives>3 ?  "." : "*") :
+              (l_iTotalAlives !== 3 ? "." : "*")
+          );
+
+          l_bBoardStateIsChanged = l_bBoardStateIsChanged || l_aNewRow[j] != l_mCurrentBoard[i][j];
+        }
+        l_mNextBoard.push(l_aNewRow);
+      }
+      
+      this.setState({
+        board: l_mNextBoard,
+        update: l_bBoardStateIsChanged
+      });
+      console.log("A");
     }
   
+    /**
+     * Rappresentazione della board
+     * 
+     * @returns elemento del dom
+     */
     render() {
         return (
           <div className={styles.board}>
             {
-              this.state.board.map(
-                (row, index) =>
-                  <div className={styles.boardRow} key={index}>
-                    {row.map((state, index2)=>
-                      <Cell className={styles.boardCell} state={state} key={index2} />
-                    )}
+              this.state.board.map
+              (
+                (row, rowKey) =>
+                  <div className={styles.boardRow} key={rowKey}>
+                    {
+                      row.map
+                      (
+                        (state, cellKey)=>
+                          <Cell className={styles.boardCell} state={state} key={cellKey} />
+                      )
+                    }
                   </div>
               )
             }

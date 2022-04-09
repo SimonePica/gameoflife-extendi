@@ -14,13 +14,24 @@
   left: 0px;
   right: 0px;
   bottom: 0px;
-  box-shadow: inset 0px 0px 0px 1px #000;
+  box-shadow: inset 0px 0px 0px 1px #0a0f16;
+  font-size: 10px;
 }
 
 .aspectRatio1x1>span.alive {
-  background: rgb(245, 224, 38);
+  background: #2196f3;
+  color: #16202c;
 }
 
 .aspectRatio1x1>span.dead {
-  background: #ccc;
+  background: #16202c;
+  color: #2196f3;
+  font-size: 1.3em;
+}
+
+
+@media only screen and (max-width: 768px) {
+  .aspectRatio1x1>span {
+    font-size: 8px;
+  }
 }
