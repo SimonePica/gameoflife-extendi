@@ -7,47 +7,50 @@ class Board extends React.Component {
       super(props);
 
       this.timerID = null;
-      var currentState = [
-        ["*", ".", ".", "*", ".",".", ".", "*","*","*","*", ".", ".", "*", ".",".", ".", "*","*","*"],
-        ["*", ".", ".", "*", ".", "*",".", ".","*","*","*", ".", ".", "*", ".",".", ".", "*","*","*"],
-        ["*", "*", ".", ".", ".", ".",".", ".","*","*","*", ".", ".", "*", ".",".", ".", "*","*","*"],
-        [".", ".", ".", ".", ".", "*","*", ".", ".","*","*", ".", ".", "*", ".",".", ".", "*","*","*"],
-        ["*", ".", ".", ".", ".",".", ".", ".","*","*","*", ".", ".", "*", ".",".", ".", "*","*","*"],
-        ["*", ".", ".", "*", ".",".", ".", "*","*","*","*", ".", ".", "*", ".",".", ".", "*","*","*"],
-        ["*", ".", ".", "*", ".", "*",".", ".","*","*","*", ".", ".", "*", ".",".", ".", "*","*","*"],
-        ["*", "*", ".", ".", ".", ".",".", ".","*","*","*", ".", ".", "*", ".",".", ".", "*","*","*"],
-        [".", ".", ".", ".", ".", "*","*", ".", ".","*","*", ".", ".", "*", ".",".", ".", "*","*","*"],
-        ["*", ".", ".", ".", ".",".", ".", ".","*","*","*", ".", ".", "*", ".",".", ".", "*","*","*"]
-      ];
-      this.state = {board: currentState, update: true};
-      this.setNextGeneration = this.setNextGeneration.bind(this);
+      this.state = {board: this.props.board, count: 0};
+      this.setNextGeneration = this.nextGeneration.bind(this);
     }
   
     componentDidMount() {
-      this.timerID = setInterval(
-        () => this.setNextGeneration(),
-        1000
-      );
+      let currentBoard = this.state.board;
+      for(let i=0; i<(this.props.initialGeneration || 0); i++){
+        currentBoard = this.nextGeneration(currentBoard);
+      }
+
+      this.setState({
+        board: currentBoard,
+        count: this.props.initialGeneration
+      });
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+      if(prevProps.enable !== this.props.enable && this.props.enable) {
+        this.timerID = setInterval(
+          () => this.setState((prevState) => ({
+            board: this.nextGeneration(),
+            count: prevState.count + 1
+          })),
+          this.props.speed || 100
+        );
+      } else if(prevProps.enable !== this.props.enable && !this.props.enable) {
+        clearInterval(this.timerID);
+      }
+
+      if (prevState.count !== this.state.count && typeof this.props.updateCount === "function") 
+        this.props.updateCount(this.state.count);
+      
     }
 
     componentWillUnmount() {
       clearInterval(this.timerID);
     }
 
-    componentDidUpdate() {
-      // Interrompe il timer di aggiornamento quando non ci sono ulteriori generazioni
-      if(!this.state.update) {
-        clearInterval(this.timerID);
-      }
-    }
-
     /**
      * Genera lo stato successivo della board
      */
-    setNextGeneration() {
-      let l_mCurrentBoard = this.state.board;
+    nextGeneration(currentBoard = null) {
+      let l_mCurrentBoard = currentBoard || this.state.board;
       let l_mNextBoard = [];
-      var l_bBoardStateIsChanged = false;
 
       // Genero il prossimo stato della board
       for (let i = 0; i < l_mCurrentBoard.length; i++) {
@@ -84,17 +87,11 @@ class Board extends React.Component {
               (l_iTotalAlives<2 || l_iTotalAlives>3 ?  "." : "*") :
               (l_iTotalAlives !== 3 ? "." : "*")
           );
-
-          l_bBoardStateIsChanged = l_bBoardStateIsChanged || l_aNewRow[j] != l_mCurrentBoard[i][j];
         }
         l_mNextBoard.push(l_aNewRow);
       }
       
-      this.setState({
-        board: l_mNextBoard,
-        update: l_bBoardStateIsChanged
-      });
-      console.log("A");
+      return l_mNextBoard;
     }
   
     /**

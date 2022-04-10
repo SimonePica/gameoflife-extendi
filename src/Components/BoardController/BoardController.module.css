@@ -1,0 +1,220 @@
+
+.wrapper {
+    display: flex;
+    align-items: stretch;
+    justify-content: stretch;
+    flex-wrap: wrap;
+    min-height: 100vh;
+  }
+  .wrapper>aside {
+    width: 300px;
+    background-color: #1d2b3b;
+    box-shadow: 2px 0px 0px rgb(0 0 0 / 15%);
+    position: relative;
+    order: 0;
+  }
+  .wrapper>aside>section {
+    padding: 15px;
+  }
+  
+  .wrapper>aside>section .title {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .wrapper>aside>section h1 {
+    font-weight: 100;
+    color: #fff;
+    margin: 0px;
+    margin-bottom: 30px;
+  }
+  .wrapper>aside>section h1 span {
+    font-weight: bold;
+    display: block;
+    text-transform: uppercase;
+    font-size: 0.9em;
+  }
+  
+  .wrapper>aside .counter {
+    text-align: center;
+  }
+  
+  .wrapper>aside .counter span{
+      width: 50px;
+      height: 50px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #2196f3;
+      border-radius: 100%;
+      background: #16202c;
+      font-weight: bold;
+      font-size: 10px;
+      color: #fff;
+  }
+  
+  .wrapper>aside>section label {
+    border-bottom: 1px solid #2d415a;
+    margin-top: 30px;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    margin-bottom: 10px;
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #2196f3;
+    font-weight: bold;
+    display: block;
+  }
+
+  .wrapper>aside>section i {
+    min-height: 30px;
+
+    font-size: 11px;
+    color: #fff;
+    display: block;
+    text-align: justify;
+}
+  
+  input {
+    background: #16202c;
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    color: rgba(255, 255, 255, 0.75);
+    border: none;
+    outline: none;
+  }
+  
+  .wrapper>aside>section .buttons {
+    margin-top: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .wrapper>aside>section .buttons>* {
+    flex-grow: 1;
+    padding: 10px;
+    border: 0px;
+    border-radius: 0px;
+    transition: 300ms;
+    -webkit-transition: 300ms;
+    -moz-transition: 300ms;
+    -ms-transition: 300ms;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  
+  .wrapper>aside>section .buttons .startButton {
+    background: #8bc34a;
+    color: #16202c;
+  }
+  .wrapper>aside>section .buttons .startButton:hover {
+    background: #558b2f;
+  }
+  .wrapper>aside>section .buttons .stopButton {
+    background: #af2b2b;
+    color: #fff;
+  }
+  .wrapper>aside>section .buttons .stopButton:hover {
+    background: #7c1d1d;
+  }
+  .wrapper>aside>section .buttons *:disabled {
+    background: #0a0f16 !important;
+    color: #fff !important;
+    cursor: no-drop;
+  }
+  
+  .wrapper>main {
+    flex-grow: 1;
+    min-width: 428px;
+    max-width: 100%;
+    background-color: #192432;
+    padding: 20px;
+    order: 1;
+  }
+  
+  .wrapper>main>* {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  
+  .logo {    
+    padding: 15px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    text-transform: uppercase;
+    background: #273a52;
+    box-shadow: 0px 2px 0px rgb(0 0 0 / 15%);
+    color: #2196f3;
+    position: sticky;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+  }
+  
+  .logo>.group {   
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+  }
+  
+  .logo>.group span {    
+    line-height: 14px;
+  }
+  
+  .logo>.group>.g {
+    font-size: 55px;
+    line-height: 23px;
+  }
+  
+  .logo>.group .of {
+    font-size: 10px;
+    font-weight: 100;
+    color: #fff;
+  }
+  
+
+.messageWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.messageWrapper .message {
+    background: rgba(255,255,255,0.1);
+    padding: 20px;
+    box-shadow: 0px 2px 0px 3px rgba(0,0,0,0.05);
+}
+
+.messageWrapper .message .icon {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.messageWrapper .message span {
+    font-size: 0.9em;
+    color: #fff;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+  @media only screen and (max-width: 768px) {
+    .wrapper>aside {
+      flex-grow: 1;
+      order: 2;
+    }
+  
+    .wrapper>main {
+      min-width: 0px;
+      flex-basis: 100%;
+    }
+  }
+  
