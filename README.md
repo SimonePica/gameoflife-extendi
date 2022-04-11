@@ -6,14 +6,14 @@ Progetto creato con ReactJS che simula "Conway's Game of Life".
 
 1. Creare un file JSON nel seguente formato:
 
->{
->    "initialGeneration": 2,
->    "board": [
->        ["*", ".", ".", "*"],
->        ["*", ".", ".", "*"],
->        ["*", ".", ".", "*"]
->    ]
->}
+```json
+    "initialGeneration": 2,
+    "board": [
+        ["*", ".", ".", "*"],
+        ["*", ".", ".", "*"],
+        ["*", ".", ".", "*"]
+    ]
+```
 
 dove *initialGeneration* è la generazione di partenza e *board* è una matrice di "*", "." che rappresenta lo stato iniziale;
 
