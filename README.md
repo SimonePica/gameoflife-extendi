@@ -19,7 +19,7 @@ Progetto creato con ReactJS che simula "Conway's Game of Life".
 
 dove *initialGeneration* è la generazione di partenza e *board* è una matrice di "*", "." che rappresenta lo stato iniziale;
 
-**In src/initialConfiguration sono stati creati dei file di esempio**
+**In src/initialConfiguration sono stati creati dei file di esempio.**
 
 2. Caricare il file JSON creato nell'applicazione;
 3. Determinare la velocità di esecuzione (default: 500, minValue: 100);
